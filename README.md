@@ -57,7 +57,9 @@ safetensor-image-endpoint
    - `POST /api/v1/generate` – create an image or GIF from a prompt (set `model_name` to select the preset).
 
 6. **Hugging Face authentication:**
-   A project default token is baked into `src/core/config.py`. Override it via the `HUGGINGFACE_TOKEN` environment variable (or `.env`) if you need to use a different account.
+   The application reads the Hugging Face token from environment variables or a local `.env` file. Set `HUGGINGFACEHUB_API_TOKEN`, `HF_TOKEN`, or `HUGGINGFACE_TOKEN` in your environment or copy `.env.example` to `.env` and add your token there.
+
+   IMPORTANT: Never commit real API tokens to source control. This repository includes `.env.example` as a template and `.gitignore` excludes `.env`.
 
 ### Model Configuration & LoRA Support
 

@@ -1,8 +1,8 @@
 [tool]
-name = "safetensor-image-endpoint"
+name = "PicPoint"
 version = "0.1.0"
 description = "A FastAPI application for processing images using safetensor models."
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Muthu Subramanian <muthu.g.subramanian@outlook.com>"]
 license = "MIT"
 
 [build-system]

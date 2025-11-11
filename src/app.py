@@ -13,10 +13,20 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.api.deps import get_inference_service
 from src.api.endpoints import router as api_router
 from src.core.config import settings
+from src.core.hf import ensure_hf_login
 from src.schemas.request import GenerationParams, InputType, OutputType
 
 app = FastAPI(title=settings.project_name)
 app.include_router(api_router)
+
+
+@app.on_event("startup")
+def _startup_event() -> None:
+    """Run once when the FastAPI app starts under an ASGI server.
+
+    Ensures the Hugging Face token (if present) is registered with huggingface_hub.
+    """
+    ensure_hf_login()
 
 
 def run_streamlit_ui() -> None:
@@ -127,6 +137,8 @@ def run_streamlit_ui() -> None:
 
 
 def main() -> None:
+    # Ensure Hugging Face token (if present) is logged for downstream libraries.
+    ensure_hf_login()
     run_streamlit_ui()
 
 

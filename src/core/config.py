@@ -14,8 +14,11 @@ class Settings(BaseSettings):
     data_dir: Path = Field(default=Path("data"))
 
     default_model_name: str = Field(default="nsfw-gen-v2")
+    # Read the Hugging Face token from environment (preferred) or a .env file.
+    # IMPORTANT: Do NOT commit real tokens to source control. Use .env or environment
+    # variables like HUGGINGFACEHUB_API_TOKEN, HF_TOKEN, or HUGGINGFACE_TOKEN.
     huggingface_token: str | None = Field(
-        default="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",
+        default=None,
         validation_alias=AliasChoices("HUGGINGFACE_TOKEN", "huggingface_token"),
     )
 
