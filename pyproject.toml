@@ -1,0 +1,28 @@
+[tool]
+name = "safetensor-image-endpoint"
+version = "0.1.0"
+description = "A FastAPI application for processing images using safetensor models."
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependencies]
+fastapi = "^0.75.0"
+uvicorn = "^0.17.0"
+pillow = "^9.0.0"
+torch = "^1.10.0"
+transformers = "^4.15.0"
+safetensors = "^0.2.0"
+imageio = "^2.31.0"
+streamlit = "^1.36.0"
+python-multipart = "^0.0.9"
+pydantic-settings = "^2.2.1"
+httpx = "^0.28.0"
+diffusers = "^0.31.0"
+accelerate = "^1.0.0"
+
+[tool.poetry]
+packages = [{ include = "src" }]

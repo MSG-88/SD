@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pillow
+torch
+transformers
+safetensors
+numpy
+opencv-python
+pydantic
+pydantic-settings
+python-multipart
+imageio
+streamlit
+httpx
+diffusers
+accelerate
+huggingface-hub
