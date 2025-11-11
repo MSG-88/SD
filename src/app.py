@@ -1,8 +1,6 @@
 from __future__ import annotations
-
 import sys
 from pathlib import Path
-
 from fastapi import FastAPI
 
 # Ensure the project root is importable when this file is executed as a script.

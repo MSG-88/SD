@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import sys
 from typing import Optional
@@ -18,7 +19,9 @@ def get_hf_token() -> Optional[str]:
     ):
         val = os.getenv(name)
         if val:
+            logging.info(f"Hugging Face token found in environment variable: {name}")
             return val
+    logging.warning("No Hugging Face token found in any known environment variable.")
     return None
 
 
@@ -30,8 +33,10 @@ def ensure_hf_login() -> Optional[str]:
     """
     token = get_hf_token()
     if not token:
+        logging.error("No Hugging Face token found. Please set HUGGINGFACEHUB_API_TOKEN or similar.")
         return None
-
+    if not token.startswith("hf_"):
+        logging.warning("The Hugging Face token found does not start with 'hf_'. It may be invalid.")
     try:
         from huggingface_hub import login
     except Exception:
@@ -41,11 +46,9 @@ def ensure_hf_login() -> Optional[str]:
             file=sys.stderr,
         )
         return token
-
     try:
         # Do not add to git credential helper
         login(token=token, add_to_git_credential=False)
     except Exception as exc:  # pragma: no cover - best-effort login
-        print(f"Warning: huggingface_hub.login failed: {exc}", file=sys.stderr)
-
+        logging.error(f"huggingface_hub.login failed: {exc}")
     return token
