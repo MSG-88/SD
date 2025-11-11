@@ -2,6 +2,10 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 from fastapi import FastAPI
+import dotenv
+
+# Load environment variables from .env file
+dotenv.load_dotenv()
 
 # Ensure the project root is importable when this file is executed as a script.
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
