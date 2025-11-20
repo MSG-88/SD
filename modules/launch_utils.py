@@ -317,7 +317,12 @@ def requirements_met(requirements_file):
 
 def prepare_environment():
     torch_index_url = os.environ.get('TORCH_INDEX_URL', "https://download.pytorch.org/whl/cu121")
-    torch_command = os.environ.get('TORCH_COMMAND', f"pip install torch==2.1.2 torchvision==0.16.2 --extra-index-url {torch_index_url}")
+    torch_extra_index_url = os.environ.get('TORCH_EXTRA_INDEX_URL')
+    default_torch_command = f"pip install torch==2.1.2 torchvision==0.16.2 --index-url {torch_index_url}"
+    if torch_extra_index_url:
+        default_torch_command += f" --extra-index-url {torch_extra_index_url}"
+
+    torch_command = os.environ.get('TORCH_COMMAND', default_torch_command)
     if args.use_ipex:
         if platform.system() == "Windows":
             # The "Nuullll/intel-extension-for-pytorch" wheels were built from IPEX source for Intel Arc GPU: https://github.com/intel/intel-extension-for-pytorch/tree/xpu-main
@@ -384,9 +389,25 @@ def prepare_environment():
     if args.use_ipex:
         args.skip_torch_cuda_test = True
     if not args.skip_torch_cuda_test and not check_run_python("import torch; assert torch.cuda.is_available()"):
+        diag_script = "; ".join(
+            [
+                "import torch",
+                "print('Torch CUDA available:', torch.cuda.is_available())",
+                "print('Torch CUDA version:', torch.version.cuda)",
+                "print('Torch build with CUDA:', torch.backends.cuda.is_built())",
+                "print('Detected GPUs:', torch.cuda.device_count())",
+                "print('CUDA device 0:', torch.cuda.get_device_name(0) if torch.cuda.device_count() else 'N/A')",
+            ]
+        )
+        diag_result = subprocess.run([python, "-c", diag_script], capture_output=True, text=True, shell=False)
+
         raise RuntimeError(
-            'Torch is not able to use GPU; '
-            'add --skip-torch-cuda-test to COMMANDLINE_ARGS variable to disable this check'
+            'Torch is not able to use GPU. This is often caused by installing a CPU-only torch wheel.\n'
+            f"To force a CUDA build, ensure TORCH_INDEX_URL is set to {torch_index_url} or set TORCH_EXTRA_INDEX_URL if you use a mirror, "
+            "and reinstall torch/torchvision.\n"
+            "Diagnostic output from torch:\n"
+            + diag_result.stdout
+            + diag_result.stderr
         )
     startup_timer.record("torch GPU test")
 
