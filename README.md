@@ -3,6 +3,14 @@ A web interface for Stable Diffusion, implemented using Gradio library.
 
 ![](screenshot.png)
 
+## Video and model automation
+
+- Generate short animations directly from Stable Diffusion checkpoints via `scripts/generate_video.py "a sunset || a neon city" --model path/to/model.safetensors --frames 24 --fps 12 --width 768 --height 432`.
+- Download checkpoints from Civitai with `scripts/download_civitai_model.py <model-id-or-url> --config configs/civitai.example.yaml` (or environment variables `CIVITAI_API_KEY`, `CIVITAI_BASE_URL`, and `CIVITAI_MODELS_DIR`).
+- Blend or weight multiple checkpoints together using `scripts/merge_models.py merged.safetensors --models first.safetensors,second.safetensors --weights 0.4,0.6`.
+
+Examples are lightweight and intended as building blocks for automation or integration into other tooling; see the `configs/civitai.example.yaml` template for configuration options.
+
 ## Features
 [Detailed feature showcase with images](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Features):
 - Original txt2img and img2img modes
