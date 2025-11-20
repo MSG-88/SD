@@ -1,9 +1,0 @@
-{
-  "tokenizer": {
-    "type": "BertTokenizer",
-    "model_max_length": 512,
-    "do_lower_case": true,
-    "vocab_file": "path/to/vocab.txt",
-    "merges_file": "path/to/merges.txt"
-  }
-}

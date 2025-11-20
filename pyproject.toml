@@ -1,28 +1,38 @@
-[tool]
-name = "PicPoint"
-version = "0.1.0"
-description = "A FastAPI application for processing images using safetensor models."
-authors = ["Muthu Subramanian <muthu.g.subramanian@outlook.com>"]
-license = "MIT"
+[tool.ruff]
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+target-version = "py39"
 
-[dependencies]
-fastapi = "^0.75.0"
-uvicorn = "^0.17.0"
-pillow = "^9.0.0"
-torch = "^1.10.0"
-transformers = "^4.15.0"
-safetensors = "^0.2.0"
-imageio = "^2.31.0"
-streamlit = "^1.36.0"
-python-multipart = "^0.0.9"
-pydantic-settings = "^2.2.1"
-httpx = "^0.28.0"
-diffusers = "^0.31.0"
-accelerate = "^1.0.0"
+[tool.ruff.lint]
 
-[tool.poetry]
-packages = [{ include = "src" }]
+extend-select = [
+  "B",
+  "C",
+  "I",
+  "W",
+]
+
+exclude = [
+	"extensions",
+	"extensions-disabled",
+]
+
+ignore = [
+	"E501", # Line too long
+	"E721", # Do not compare types, use `isinstance`
+	"E731", # Do not assign a `lambda` expression, use a `def`
+	
+	"I001", # Import block is un-sorted or un-formatted
+	"C901", # Function is too complex
+	"C408", # Rewrite as a literal
+	"W605", # invalid escape sequence, messes with some docstrings
+]
+
+[tool.ruff.lint.per-file-ignores]
+"webui.py" = ["E402"]  # Module level import not at top of file
+
+[tool.ruff.lint.flake8-bugbear]
+# Allow default arguments like, e.g., `data: List[str] = fastapi.Query(None)`.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.security.HTTPBasic"]
+
+[tool.pytest.ini_options]
+base_url = "http://127.0.0.1:7860"
