@@ -1,0 +1,6 @@
+# Example configuration file for the optional Civitai integration
+# Copy this file to civitai.yaml and fill in your values, or set the
+# CIVITAI_API_KEY / CIVITAI_BASE_URL / CIVITAI_MODELS_DIR environment variables.
+api_key: ""
+base_url: "https://civitai.com/api/v1"
+models_dir: "models/Civitai"
