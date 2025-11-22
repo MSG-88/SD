@@ -388,6 +388,10 @@ def prepare_environment():
 
     if args.use_ipex:
         args.skip_torch_cuda_test = True
+    # When user explicitly requests CPU execution, skip CUDA availability checks to avoid
+    # failing startup on systems without a GPU or CUDA-enabled torch build.
+    if args.use_cpu:
+        args.skip_torch_cuda_test = True
     if not args.skip_torch_cuda_test and not check_run_python("import torch; assert torch.cuda.is_available()"):
         diag_script = "; ".join(
             [
